@@ -41,6 +41,35 @@
 
 (fact (make-neighbor 2 0 :west 2 0) => (water.core.Position. 1 0))
 
+(fact (make-point 0 0 :north 0 0 [[0]]) => nil)
+
+(fact (make-point 1 1 :north 1 1 [[0 1] [2 3]]) => (water.core.Point. 1 (water.core.Position. 1 0) ))
+
+(fact (make-relative 0 0 :north 0 0 [[0]]) => nil)
+
+(fact (make-relative 1 1 :north 1 1 [[0 1] [2 3]]) => (water.core.RelativePoint. 1
+														(water.core.Point. 1 (water.core.Position. 1 0)) :north))
+
+(fact (drains-to? 1 1 [[0 1] [2 3]] 1 1) => (water.core.Point. 1 (water.core.Position. 1 0)) )
+
+(fact (drains-to? 0 1 [[0 1] [2 3]] 1 1) => (water.core.Point. 0 (water.core.Position. 0 0)) )
+
+(fact (drains-to? 0 0 [[0 1] [2 3]] 1 1) => (water.core.Point. 0 (water.core.Position. 0 0)) )
+
+(fact (drains-to? 0 1 [[0 1] [2 3]] 1 1) => (water.core.Point. 0 (water.core.Position. 0 0)) )
+
+(fact (drains-to? 0 1 [[2 3] [1 0]] 1 1) => (water.core.Point. 0 (water.core.Position. 1 1)) )
+
+(fact (drains-to? 1 1 [[0 0 0] [0 0 0] [0 0 0]] 2 2) => (water.core.Point. 0 (water.core.Position. 1 1)) )
+
+(fact (drains-to? 1 1 [[0 0 0] [0 1 0] [0 0 0]] 2 2) => (water.core.Point. 0 (water.core.Position. 1 0)) )
+
+(fact (drains-to? 1 1 [[0 1 0] [0 1 0] [0 0 0]] 2 2) => (water.core.Point. 0 (water.core.Position. 0 1)) )
+
+(fact (drains-to? 1 1 [[0 1 0] [1 1 0] [0 0 0]] 2 2) => (water.core.Point. 0 (water.core.Position. 2 1)) )
+
+(fact (drains-to? 1 1 [[0 1 0] [1 1 1] [0 0 0]] 2 2) => (water.core.Point. 0 (water.core.Position. 1 2)) )
+
 (fact (make-node 1 0 0 0 0) => firstNode)
 
 (fact (make-node 5 1 1 2 2) => anode)
