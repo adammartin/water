@@ -6,7 +6,7 @@
 
 (defrecord RelativePoint [value point direction])
 
-(defrecord Node [value position north south east west drainsTo])
+(defrecord Node [self drainsTo])
 
 (defn make-position [x y] (Position. x y) )
 
@@ -67,16 +67,13 @@
 										    filtered-relatives (to-map (filter #(= (:value %) minimum) relatives))] 
 	(:point (filter-relatives filtered-relatives))))
 
-(defn make-node [value x y maxX maxY] (Node. value (make-position x y) 
-												   (make-neighbor x y :north maxX maxY) 
-												   (make-neighbor x y :south maxX maxY) 
-												   (make-neighbor x y :east maxX maxY)
-												   (make-neighbor x y :west maxX maxY)
-												   nil)
+(defn make-node [value x y maxX maxY grid] (Node. (Point. value (make-position x y))
+										   (drains-to? x y grid maxX maxY))
 )
 
 (defn make-nodes [drainage maxX maxY] (vec (for [y (range (+ maxY 1))] 
-									  			(vec (for [x (range (+ 1 maxX))] (make-node (nth (nth drainage y) x) x y maxX maxY)))
+									  			(vec (for [x (range (+ 1 maxX))] 
+									  				(make-node (nth (nth drainage y) x) x y maxX maxY drainage)))
 									  		)))
 
 (defn populate-drain [drainage] drainage)
